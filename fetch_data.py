@@ -2,9 +2,15 @@ import requests
 import os
 from datetime import datetime
 from dotenv import load_dotenv
+from supabase import create_client
 
 load_dotenv()
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+# Connect to Supabase
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 LAT = 24.8607
 LON = 67.0011
@@ -34,11 +40,11 @@ now = datetime.now()
 hour = now.hour
 day = now.day
 month = now.month
-day_of_week = now.weekday()  # Monday = 0, Sunday = 6
+day_of_week = now.weekday()
 
 # Build one clean "row" of features
 feature_row = {
-    "timestamp": now.strftime("%Y-%m-%d %H:%M:%S"),
+    "timestamp": now.isoformat(),
     "hour": hour,
     "day": day,
     "month": month,
@@ -53,3 +59,8 @@ feature_row = {
 
 print("FEATURE ROW:")
 print(feature_row)
+
+# Send it to Supabase
+result = supabase.table("aqi_features").insert(feature_row).execute()
+print("\nSAVED TO SUPABASE:")
+print(result)
