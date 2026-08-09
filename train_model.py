@@ -69,3 +69,25 @@ print(f"R² Score: {ridge_r2:.2f}")
 print("\n--- COMPARISON ---")
 print(f"Random Forest R²: {r2:.2f}")
 print(f"Ridge Regression R²: {ridge_r2:.2f}")
+import joblib
+from huggingface_hub import HfApi
+
+# Save the Ridge model to a file
+joblib.dump(ridge_model, "aqi_model.joblib")
+print("\nModel saved locally as aqi_model.joblib")
+
+# Upload it to Hugging Face
+HF_TOKEN = os.getenv("HF_TOKEN")
+api = HfApi(token=HF_TOKEN)
+
+api.create_repo(repo_id="angelinaharis/aqi-predictor-model", repo_type="model", exist_ok=True)
+
+api.upload_file(
+    path_or_fileobj="aqi_model.joblib",
+    path_in_repo="aqi_model.joblib",
+    repo_id="angelinaharis/aqi-predictor-model",
+    repo_type="model"
+)
+
+print("Model uploaded to Hugging Face")
+
