@@ -26,7 +26,6 @@ weather_response = requests.get(weather_url)
 weather_data = weather_response.json()
 
 # Pull out the specific numbers we care about
-print("DEBUG - pollution_data:", pollution_data)
 pollution_info = pollution_data['list'][0]
 aqi = pollution_info['main']['aqi']
 pm2_5 = pollution_info['components']['pm2_5']
@@ -65,3 +64,4 @@ print(feature_row)
 result = supabase.table("aqi_features").insert(feature_row).execute()
 print("\nSAVED TO SUPABASE:")
 print(result)
+
