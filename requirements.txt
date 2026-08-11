@@ -1,0 +1,11 @@
+streamlit
+requests
+python-dotenv
+supabase
+pandas
+scikit-learn
+joblib
+huggingface_hub
+shap
+matplotlib
+numpy==2.4.1
