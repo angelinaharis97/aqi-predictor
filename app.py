@@ -41,7 +41,10 @@ current_pm25 = pollution_data['list'][0]['components']['pm2_5']
 current_pm10 = pollution_data['list'][0]['components']['pm10']
 
 # Load your trained model
-model = joblib.load("aqi_model.joblib")
+from huggingface_hub import hf_hub_download
+
+model_path = hf_hub_download(repo_id="angelinaharis/aqi-predictor-model", filename="aqi_model.joblib")
+model = joblib.load(model_path)
 
 st.subheader("3-Day Forecast")
 
@@ -104,4 +107,5 @@ shap_values = explainer(sample_input)
 fig, ax = plt.subplots()
 shap.plots.bar(shap_values[0], show=False)
 st.pyplot(fig)
+
 
