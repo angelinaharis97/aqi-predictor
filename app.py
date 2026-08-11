@@ -65,4 +65,43 @@ for i in range(1, 4):
     predicted_aqi_rounded = round(predicted_aqi)
     
     st.write(f"**{future_date.strftime('%A, %b %d')}**: Predicted AQI ≈ {predicted_aqi:.1f} ({aqi_labels.get(predicted_aqi_rounded, 'Unknown')})")
-    
+    import pandas as pd
+import shap
+import matplotlib.pyplot as plt
+
+# --- History Chart ---
+st.subheader("Recent AQI History")
+
+history_response = supabase.table("aqi_features").select("timestamp", "aqi").order("timestamp").execute()
+history_df = pd.DataFrame(history_response.data)
+history_df['timestamp'] = pd.to_datetime(history_df['timestamp'], format='mixed')
+history_df = history_df.set_index('timestamp')
+
+st.line_chart(history_df['aqi'])
+
+# --- Hazard Alert ---
+if current_aqi >= 4:
+    st.error(f"⚠️ Hazardous air quality alert! Current AQI is {current_aqi} ({aqi_labels[current_aqi]}). Consider limiting outdoor activity.")
+else:
+    st.success(f"Air quality is currently at an acceptable level ({aqi_labels[current_aqi]}).")
+
+# --- SHAP Explanation ---
+st.subheader("Why this prediction? (Feature Importance)")
+
+feature_columns = ["hour", "day", "month", "day_of_week", "pm2_5", "pm10", "temp", "humidity", "wind_speed"]
+
+# Use recent historical data as the "background" for SHAP to compare against
+background_data = pd.DataFrame(supabase.table("aqi_features").select("*").execute().data)[feature_columns]
+
+explainer = shap.Explainer(model, background_data)
+sample_input = pd.DataFrame([[
+    datetime.now().hour, datetime.now().day, datetime.now().month, datetime.now().weekday(),
+    current_pm25, current_pm10, current_temp, current_humidity, current_wind
+]], columns=feature_columns)
+
+shap_values = explainer(sample_input)
+
+fig, ax = plt.subplots()
+shap.plots.bar(shap_values[0], show=False)
+st.pyplot(fig)
+
