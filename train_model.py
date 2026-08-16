@@ -10,8 +10,18 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Pull ALL rows from your feature table
-response = supabase.table("aqi_features").select("*").execute()
-data = response.data
+all_data = []
+batch_size = 1000
+offset = 0
+
+while True:
+    response = supabase.table("aqi_features").select("*").range(offset, offset + batch_size - 1).execute()
+    if not response.data:
+        break
+    all_data.extend(response.data)
+    offset += batch_size
+
+data = all_data
 
 # Turn it into a proper table (like an Excel sheet inside Python)
 df = pd.DataFrame(data)
