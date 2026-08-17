@@ -30,6 +30,10 @@ pollution_info = pollution_data['list'][0]
 aqi = pollution_info['main']['aqi']
 pm2_5 = pollution_info['components']['pm2_5']
 pm10 = pollution_info['components']['pm10']
+o3 = pollution_info['components']['o3']
+no2 = pollution_info['components']['no2']
+so2 = pollution_info['components']['so2']
+co = pollution_info['components']['co']
 
 temp = weather_data['main']['temp']
 humidity = weather_data['main']['humidity']
@@ -52,6 +56,10 @@ feature_row = {
     "aqi": aqi,
     "pm2_5": pm2_5,
     "pm10": pm10,
+    "o3": o3,
+    "no2": no2,
+    "so2": so2,
+    "co": co,
     "temp": temp,
     "humidity": humidity,
     "wind_speed": wind_speed

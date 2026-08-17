@@ -84,6 +84,10 @@ for i, time_str in enumerate(weather_times):
             "aqi": pollution_entry['main']['aqi'],
             "pm2_5": pollution_entry['components']['pm2_5'],
             "pm10": pollution_entry['components']['pm10'],
+            "o3": pollution_entry['components']['o3'],
+            "no2": pollution_entry['components']['no2'],
+            "so2": pollution_entry['components']['so2'],
+            "co": pollution_entry['components']['co'],
             "temp": weather_temps[i],
             "humidity": weather_humidity[i],
             "wind_speed": weather_wind[i]
@@ -101,3 +105,4 @@ for i in range(0, len(feature_rows), batch_size):
     print(f"  Uploaded rows {i} to {i + len(batch)}")
 
 print("Backfill complete!")
+
