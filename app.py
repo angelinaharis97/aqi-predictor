@@ -116,4 +116,21 @@ shap_values = explainer(sample_input)
 fig, ax = plt.subplots()
 shap.plots.bar(shap_values[0], show=False)
 st.pyplot(fig)
+# --- Model Comparison Table ---
+st.subheader("Model Comparison")
+
+import json
+
+try:
+    with open("model_metrics.json") as f:
+        metrics = json.load(f)
+
+    for horizon_name, model_results in metrics.items():
+        st.write(f"**{horizon_name} horizon:**")
+        comparison_df = pd.DataFrame(model_results)
+        comparison_df = comparison_df.rename(columns={"model": "Model", "mae": "MAE", "rmse": "RMSE", "r2": "R²"})
+        st.dataframe(comparison_df, hide_index=True, use_container_width=True)
+except FileNotFoundError:
+    st.write("Model metrics not yet available.")
+    
 

@@ -44,6 +44,7 @@ horizons = {
 }
 
 results = {}
+all_results = {}
 
 for horizon_name, target_col in horizons.items():
     print(f"\n=== Training for {horizon_name} horizon ===")
@@ -77,6 +78,10 @@ for horizon_name, target_col in horizons.items():
 
         print(f"  {name}: MAE={mae:.2f}, RMSE={rmse:.2f}, R2={r2:.3f}")
 
+        all_results.setdefault(horizon_name, []).append({
+            "model": name, "mae": round(mae, 3), "rmse": round(rmse, 3), "r2": round(r2, 3)
+        })
+
         if r2 > best_r2:
             best_r2 = r2
             best_model = model
@@ -96,6 +101,13 @@ for horizon_name, target_col in horizons.items():
     )
     print(f"  Uploaded {filename} to Hugging Face")
 
+import json
+
 print("\n=== SUMMARY ===")
 for horizon, info in results.items():
     print(f"{horizon}: best model = {info['model']}, R2 = {info['r2']:.3f}")
+
+# Save full results (all models, all horizons) to a file the dashboard can read
+with open("model_metrics.json", "w") as f:
+    json.dump(all_results, f, indent=2)
+print("\nSaved model_metrics.json")

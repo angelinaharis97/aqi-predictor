@@ -1,0 +1,62 @@
+{
+  "24h": [
+    {
+      "model": "Ridge Regression",
+      "mae": 0.561,
+      "rmse": 0.716,
+      "r2": 0.485
+    },
+    {
+      "model": "Random Forest",
+      "mae": 0.168,
+      "rmse": 0.276,
+      "r2": 0.923
+    },
+    {
+      "model": "Gradient Boosting",
+      "mae": 0.395,
+      "rmse": 0.52,
+      "r2": 0.729
+    }
+  ],
+  "48h": [
+    {
+      "model": "Ridge Regression",
+      "mae": 0.652,
+      "rmse": 0.828,
+      "r2": 0.302
+    },
+    {
+      "model": "Random Forest",
+      "mae": 0.151,
+      "rmse": 0.255,
+      "r2": 0.934
+    },
+    {
+      "model": "Gradient Boosting",
+      "mae": 0.453,
+      "rmse": 0.573,
+      "r2": 0.666
+    }
+  ],
+  "72h": [
+    {
+      "model": "Ridge Regression",
+      "mae": 0.691,
+      "rmse": 0.87,
+      "r2": 0.223
+    },
+    {
+      "model": "Random Forest",
+      "mae": 0.148,
+      "rmse": 0.27,
+      "r2": 0.925
+    },
+    {
+      "model": "Gradient Boosting",
+      "mae": 0.454,
+      "rmse": 0.576,
+      "r2": 0.659
+    }
+  ]
+}
